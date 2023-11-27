@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+.post:hover {
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.highlight:hover {
+  background-color: #fff;
+}
+
+.heart:hover {
+  color: #E0245E;
+}
+
+.answer:hover {
+  color: rgb(3, 189, 189);
+}
