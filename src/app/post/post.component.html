@@ -2,7 +2,10 @@
   <div class="row">
     <div class="row justify-content-center mt-5">
       <div>
-        <div *ngIf="!token || statusCode == 401" class="alert alert-warning">
+        <div
+          *ngIf="!token || statusCode == 401"
+          class="alert alert-warning"
+        >
           Faça o
           <a class="text-info" href="/login">login</a> para continuar vendo o
           feed ou
@@ -40,7 +43,10 @@
                   >@{{ post.answerTo.user.username }}</a
                 >
               </p>
-              <div class="card-body card goToPost" (click)="sendToPost(post.answerTo.id)">
+              <div
+                class="card-body card goToPost"
+                (click)="sendToPost(post.answerTo.id)"
+              >
                 <div class="d-flex align-items-center">
                   <img
                     src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"

@@ -11,6 +11,38 @@
   color: #E0245E;
 }
 
+.heart-fill {
+  color: #E0245E;
+}
+
 .answer:hover {
   color: rgb(3, 189, 189);
+}
+
+.heart:active {
+  transform: scale(1.25);
+  border: white !important;
+}
+
+.answer:active {
+  transform: scale(1.25);
+  border: white !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+a:hover {
+  filter: brightness(1);
+}
+
+.send:hover {
+  transform: scale(1.1) !important;
+  transition: all .3s;
+}
+
+.send:active {
+  transform: scale(1.25) !important;
+  border: white !important;
 }

@@ -11,6 +11,8 @@ export class FeedComponent {
   posts: any[] = [];
   token: string | null = null;
   error: boolean = false;
+  user: any = null;
+  postContent: string = '';
 
   constructor(
     private feedService: FeedService,
@@ -29,7 +31,7 @@ export class FeedComponent {
       this.feedService.getPosts(this.token).subscribe(
         (res) => {
           this.posts = res;
-          console.log(res);
+          this.loadUser();
         },
         (err) => {
           if (err.status == 403 && this.token) {
@@ -41,20 +43,50 @@ export class FeedComponent {
     }
   }
 
+  loadUser() {
+    this.authService.getUserLoggedIn()?.subscribe((res) => {
+      this.user = res;
+      this.checkLikedPosts();
+    });
+  }
+
+  checkLikedPosts() {
+    this.posts.forEach((post) => {
+      this.user.liked.forEach((postLiked: any) => {
+        if (post.id === postLiked.id) {
+          post.alreadyLiked = true;
+        }
+      });
+    });
+  }
+
   sendToPost(id: string) {
     this.router.navigate([`/post/${id}`]);
   }
 
   innerFunction(event: Event) {
     event.stopPropagation();
-    console.log('Clicou no botão interno');
+  }
+
+  post() {
+    this.feedService.newPost(this.user.id, this.postContent)?.subscribe(() => {
+      this.loadPosts();
+    });
+
+    this.postContent = '';
+  }
+
+  likePost(postId: string) {
+    this.feedService.likePost(this.user.id, postId)?.subscribe((res) => {
+      this.loadPosts();
+    });
   }
 
   mouseEnter(parentDiv: Element) {
-    parentDiv.classList.add('highlight')
+    parentDiv.classList.add('highlight');
   }
 
   mouseLeave(parentDiv: Element) {
-    parentDiv.classList.remove('highlight')
+    parentDiv.classList.remove('highlight');
   }
 }
