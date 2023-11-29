@@ -15,6 +15,10 @@
   color: #E0245E;
 }
 
+.heart-fill:hover {
+  color: #c22658;
+}
+
 .answer:hover {
   color: rgb(3, 189, 189);
 }
@@ -31,10 +35,12 @@
 
 a {
   text-decoration: none !important;
+  cursor: pointer;
 }
 
 a:hover {
   filter: brightness(1);
+  text-decoration: underline !important;
 }
 
 .send:hover {

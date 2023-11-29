@@ -31,6 +31,7 @@
             </div>
           </div>
         </div>
+
         <div *ngFor="let post of posts" class="card mb-3">
           <div
             class="card-body text-start post"
@@ -56,15 +57,19 @@
                 </h6>
               </div>
             </div>
-            <p class="card-text mt-2">{{ post.content }}</p>
+            <p
+              *ngIf="post.available; else postUnavailable"
+              class="card-text mt-2"
+            >
+              {{ post.content }}
+            </p>
+            <ng-template #postUnavailable>
+              <div class="alert alert-dark">Post indisponível.</div>
+            </ng-template>
             <div *ngIf="post.answerTo">
               <p class="mb-1">
                 em resposta a
-                <a
-                  (mouseenter)="mouseEnter(parentDiv)"
-                  (mouseleave)="mouseLeave(parentDiv)"
-                  (click)="innerFunction($event)"
-                  class="text-info"
+                <a (click)="innerFunction($event)" class="text-info"
                   >@{{ post.answerTo.user.username }}</a
                 >
               </p>
@@ -93,29 +98,43 @@
                     </h6>
                   </div>
                 </div>
-                <p class="card-text mt-2">{{ post.answerTo.content }}</p>
+                <p
+                  *ngIf="post.answerTo.available; else answerUnavailable"
+                  class="card-text mt-2"
+                >
+                  {{ post.answerTo.content }}
+                </p>
+                <ng-template #answerUnavailable>
+                  <div class="alert alert-dark">Post indisponível.</div>
+                </ng-template>
                 <div class="mt-0">
                   <button
                     class="btn heart"
-                    (click)="innerFunction($event)"
-                    (mouseenter)="mouseEnter(parentDiv)"
-                    (mouseleave)="mouseLeave(parentDiv)"
+                    (click)="innerFunction($event); likePost(post.answerTo.id)"
                   >
-                    <i-bs name="heart" height="1.5rem" width="1.5rem"></i-bs>
+                    <i-bs
+                      *ngIf="!post.answerTo.alreadyLiked"
+                      name="heart"
+                      height="1.5rem"
+                      width="1.5rem"
+                    ></i-bs>
+                    <i-bs
+                      *ngIf="post.answerTo.alreadyLiked"
+                      class="heart-fill"
+                      name="heart-fill"
+                      height="1.5rem"
+                      width="1.5rem"
+                    ></i-bs>
                   </button>
                   {{ post.answerTo.likes }}
-                  <button
-                    class="btn answer"
-                    (mouseenter)="mouseEnter(parentDiv)"
-                    (mouseleave)="mouseLeave(parentDiv)"
-                  >
+                  <button class="btn answer">
                     <i-bs
                       name="chat-left"
                       height="1.5rem"
                       width="1.5rem"
                     ></i-bs>
                   </button>
-                  0
+                  {{ post.answerTo.answers }}
                 </div>
               </div>
             </div>
@@ -123,8 +142,6 @@
               <button
                 class="btn heart"
                 (click)="innerFunction($event); likePost(post.id)"
-                (mouseenter)="mouseEnter(parentDiv)"
-                (mouseleave)="mouseLeave(parentDiv)"
               >
                 <i-bs
                   *ngIf="!post.alreadyLiked"
@@ -141,14 +158,10 @@
                 ></i-bs>
               </button>
               {{ post.likes }}
-              <button
-                class="btn answer"
-                (mouseenter)="mouseEnter(parentDiv)"
-                (mouseleave)="mouseLeave(parentDiv)"
-              >
+              <button class="btn answer">
                 <i-bs name="chat-left" height="1.5rem" width="1.5rem"></i-bs>
               </button>
-              0
+              {{ post.answers }}
             </div>
           </div>
         </div>

@@ -56,6 +56,10 @@ export class FeedComponent {
         if (post.id === postLiked.id) {
           post.alreadyLiked = true;
         }
+
+        if (post.answerTo && post.answerTo.id === postLiked.id) {
+          post.answerTo.alreadyLiked = true;
+        }
       });
     });
   }

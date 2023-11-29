@@ -2,10 +2,7 @@
   <div class="row">
     <div class="row justify-content-center mt-5">
       <div>
-        <div
-          *ngIf="!token || statusCode == 401"
-          class="alert alert-warning"
-        >
+        <div *ngIf="!token || statusCode == 401" class="alert alert-warning">
           Faça o
           <a class="text-info" href="/login">login</a> para continuar vendo o
           feed ou
@@ -17,9 +14,9 @@
         </div>
       </div>
 
-      <div *ngIf="token && !statusCode && post" class="col-md-6">
+      <div *ngIf="token && !statusCode && post && user" class="col-md-6">
         <div class="card mb-3">
-          <div class="card-body">
+          <div class="card-body text-start">
             <div class="d-flex align-items-center">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
@@ -33,18 +30,29 @@
                 <h6 class="card-subtitle mb-2 text-muted small">
                   @{{ post.user.username }}
                 </h6>
+                <h6 class="card-subtitle mb-2 text-muted small">
+                  {{ post.postDate }}
+                </h6>
               </div>
             </div>
-            <p class="card-text mt-2">{{ post.content }}</p>
+            <p
+              *ngIf="post.available; else postUnavailable"
+              class="card-text mt-2"
+            >
+              {{ post.content }}
+            </p>
+            <ng-template #postUnavailable>
+              <div class="alert alert-dark">Post indisponível.</div>
+            </ng-template>
             <div *ngIf="post.answerTo">
               <p class="mb-1">
                 em resposta a
-                <a class="text-info" href=""
+                <a (click)="innerFunction($event)" class="text-info"
                   >@{{ post.answerTo.user.username }}</a
                 >
               </p>
               <div
-                class="card-body card goToPost"
+                class="card-body card post"
                 (click)="sendToPost(post.answerTo.id)"
               >
                 <div class="d-flex align-items-center">
@@ -60,15 +68,163 @@
                     <h6 class="card-subtitle mb-2 text-muted small">
                       @{{ post.answerTo.user.username }}
                     </h6>
+                    <h6 class="card-subtitle mb-2 text-muted small">
+                      {{ post.answerTo.postDate }}
+                    </h6>
                   </div>
                 </div>
-                <p class="card-text mt-2">{{ post.answerTo.content }}</p>
-              </div>
-              <div class="mt-3">
-                <button class="btn btn-link">Like</button>
-                <button class="btn btn-link">Compartilhar</button>
+                <p
+                  *ngIf="post.answerTo.available; else answerUnavailable"
+                  class="card-text mt-2"
+                >
+                  {{ post.answerTo.content }}
+                </p>
+                <ng-template #answerUnavailable>
+                  <div class="alert alert-dark">Post indisponível.</div>
+                </ng-template>
+                <div class="mt-0">
+                  <button
+                    class="btn heart"
+                    (click)="innerFunction($event); likePost(post.answerTo.id)"
+                  >
+                    <i-bs
+                      *ngIf="!post.answerTo.alreadyLiked"
+                      name="heart"
+                      height="1.5rem"
+                      width="1.5rem"
+                    ></i-bs>
+                    <i-bs
+                      *ngIf="post.answerTo.alreadyLiked"
+                      class="heart-fill"
+                      name="heart-fill"
+                      height="1.5rem"
+                      width="1.5rem"
+                    ></i-bs>
+                  </button>
+                  {{ post.answerTo.likes }}
+                  <button class="btn answer">
+                    <i-bs
+                      name="chat-left"
+                      height="1.5rem"
+                      width="1.5rem"
+                    ></i-bs>
+                  </button>
+                  {{ post.answerTo.answers }}
+                </div>
               </div>
             </div>
+            <div class="mt-3">
+              <button
+                class="btn heart"
+                (click)="innerFunction($event); likePost(post.id)"
+              >
+                <i-bs
+                  *ngIf="!post.alreadyLiked"
+                  name="heart"
+                  height="1.5rem"
+                  width="1.5rem"
+                ></i-bs>
+                <i-bs
+                  *ngIf="post.alreadyLiked"
+                  class="heart-fill"
+                  name="heart-fill"
+                  height="1.5rem"
+                  width="1.5rem"
+                ></i-bs>
+              </button>
+              {{ post.likes }}
+              <button class="btn answer">
+                <i-bs name="chat-left" height="1.5rem" width="1.5rem"></i-bs>
+              </button>
+              {{ post.answers }}
+            </div>
+
+            <div>
+              <textarea
+                class="form-control mt-3"
+                placeholder="Deseja enviar uma resposta à esse post?"
+                rows="4"
+                [(ngModel)]="answerContent"
+              ></textarea>
+              <div class="d-flex justify-content-end mt-3">
+                <button class="btn send text-primary" (click)="reply()">
+                  <i-bs name="send" height="1.5rem" width="1.5rem"></i-bs>
+                </button>
+              </div>
+            </div>
+
+            <h6
+              *ngIf="answers.length > 0"
+              class="card-subtitle mb-1 mt-3 text-muted small"
+            >
+              Respostas recentes
+            </h6>
+
+            <div
+              *ngFor="let answer of answers"
+              class="p-2 post border-top"
+              (click)="sendToPost(answer.id)"
+            >
+              <div class="d-flex align-items-center">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                  alt="Profile Pic"
+                  class="rounded-circle"
+                  width="50"
+                  height="50"
+                />
+                <div class="mx-2">
+                  <h6 class="card-title">{{ answer.user.name }}</h6>
+                  <h6 class="card-subtitle mb-2 text-muted small">
+                    @{{ answer.user.username }}
+                  </h6>
+                  <h6 class="card-subtitle mb-2 text-muted small">
+                    {{ answer.postDate }}
+                  </h6>
+                </div>
+              </div>
+              <p
+                *ngIf="answer.available; else answerUnavailable"
+                class="card-text mt-2"
+              >
+                {{ answer.content }}
+              </p>
+              <ng-template #answerUnavailable>
+                <div class="alert alert-dark">Post indisponível.</div>
+              </ng-template>
+              <div class="mt-0">
+                <button
+                  class="btn heart"
+                  (click)="innerFunction($event); likePost(answer.id, true)"
+                >
+                  <i-bs
+                    *ngIf="!answer.alreadyLiked"
+                    name="heart"
+                    height="1.5rem"
+                    width="1.5rem"
+                  ></i-bs>
+                  <i-bs
+                    *ngIf="answer.alreadyLiked"
+                    class="heart-fill"
+                    name="heart-fill"
+                    height="1.5rem"
+                    width="1.5rem"
+                  ></i-bs>
+                </button>
+                {{ answer.likes }}
+                <button class="btn answer">
+                  <i-bs name="chat-left" height="1.5rem" width="1.5rem"></i-bs>
+                </button>
+                {{ answer.answers }}
+              </div>
+            </div>
+            <button
+              *ngIf="post.answers > answers.length"
+              class="btn btn-light w-100"
+              (click)="loadAnswers()"
+            >
+              Mostrar mais respostas
+            </button>
           </div>
         </div>
       </div>
