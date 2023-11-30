@@ -68,16 +68,16 @@ export class FeedComponent {
     this.router.navigate([`/post/${id}`]);
   }
 
-  innerFunction(event: Event) {
-    event.stopPropagation();
-  }
-
   post() {
-    this.feedService.newPost(this.user.id, this.postContent)?.subscribe(() => {
-      this.loadPosts();
-    });
+    if (this.postContent.trim()) {
+      this.feedService
+        .newPost(this.user.id, this.postContent.trim())
+        ?.subscribe(() => {
+          this.loadPosts();
+        });
 
-    this.postContent = '';
+      this.postContent = '';
+    }
   }
 
   likePost(postId: string) {
@@ -86,11 +86,7 @@ export class FeedComponent {
     });
   }
 
-  mouseEnter(parentDiv: Element) {
-    parentDiv.classList.add('highlight');
-  }
-
-  mouseLeave(parentDiv: Element) {
-    parentDiv.classList.remove('highlight');
+  goToProfile(username: string) {
+    this.router.navigate([`/user/${username}`]);
   }
 }

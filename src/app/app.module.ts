@@ -9,9 +9,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PostComponent } from './post/post.component';
 import { RegisterComponent } from './register/register.component';
-import { NavigateComponent } from './navigate/navigate.component';
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 import { allIcons } from 'ngx-bootstrap-icons';
+import { ProfileComponent } from './profile/profile.component';
+import { UserPostsComponent } from './user-posts/user-posts.component';
+import { UserAnswersComponent } from './user-answers/user-answers.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { allIcons } from 'ngx-bootstrap-icons';
     FeedComponent,
     PostComponent,
     RegisterComponent,
-    NavigateComponent,
+    ProfileComponent,
+    UserPostsComponent,
+    UserAnswersComponent,
   ],
   imports: [
     BrowserModule,

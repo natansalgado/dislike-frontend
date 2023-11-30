@@ -1,12 +1,3 @@
-.post:hover {
-  background-color: #f8f9fa;
-  cursor: pointer;
-}
-
-.highlight:hover {
-  background-color: #fff;
-}
-
 .heart:hover {
   color: #E0245E;
 }
@@ -51,4 +42,26 @@ a:hover {
 .send:active {
   transform: scale(1.25) !important;
   border: white !important;
+}
+
+.goToProfile:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+img.goToProfile:hover {
+  border: 1px black solid;
+}
+
+ul li a.nav-link {
+  color: black;
+}
+
+ul li a.nav-link:hover {
+  color: black;
+  text-decoration: none !important;
+}
+
+ul li a.nav-link::selection {
+  background-color: white;
 }

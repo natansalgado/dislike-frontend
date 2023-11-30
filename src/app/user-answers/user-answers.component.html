@@ -1,0 +1,132 @@
+<div *ngIf="posts.length > 0; else noAnswers">
+  <div *ngFor="let post of posts" class="card mb-3">
+    <div class="card-body text-start post">
+      <div class="d-flex align-items-center">
+        <img
+          src="{{
+            post.user.image
+              ? post.user.image
+              : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+          }}"
+          alt="Profile Pic"
+          class="rounded-circle goToProfile"
+          width="50"
+          height="50"
+          (click)="goToProfile(post.user.username)"
+        />
+        <div class="mx-2 goToProfile" (click)="goToProfile(post.user.username)">
+          <h6 class="card-title">
+            {{ post.user.name }}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-muted small">
+            @{{ post.user.username }}
+          </h6>
+          <h6 class="card-subtitle mb-2 text-muted small">
+            {{ post.postDate | date : "dd/MM/yyyy HH:mm" }}
+          </h6>
+        </div>
+      </div>
+      <p *ngIf="post.available; else postUnavailable" class="card-text mt-2">
+        {{ post.content }}
+      </p>
+      <ng-template #postUnavailable>
+        <div class="alert alert-dark">Post indisponível.</div>
+      </ng-template>
+      <div *ngIf="post.answerTo">
+        <p class="mb-1">
+          em resposta a
+          <a class="text-info">@{{ post.answerTo.user.username }}</a>
+        </p>
+        <div class="card-body card post">
+          <div class="d-flex align-items-center">
+            <img
+              src="{{
+                post.answerTo.user.image
+                  ? post.answerTo.user.image
+                  : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+              }}"
+              alt="Profile Pic"
+              class="rounded-circle goToProfile"
+              width="50"
+              height="50"
+              (click)="goToProfile(post.answerTo.user.username)"
+            />
+            <div
+              class="mx-2 goToProfile"
+              (click)="goToProfile(post.answerTo.user.username)"
+            >
+              <h6 class="card-title">
+                {{ post.answerTo.user.name }}
+              </h6>
+              <h6 class="card-subtitle mb-2 text-muted small">
+                @{{ post.answerTo.user.username }}
+              </h6>
+              <h6 class="card-subtitle mb-2 text-muted small">
+                {{ post.answerTo.postDate | date : "dd/MM/yyyy HH:mm" }}
+              </h6>
+            </div>
+          </div>
+          <p
+            *ngIf="post.answerTo.available; else answerUnavailable"
+            class="card-text mt-2"
+          >
+            {{ post.answerTo.content }}
+          </p>
+          <ng-template #answerUnavailable>
+            <div class="alert alert-dark">Post indisponível.</div>
+          </ng-template>
+          <div class="mt-0">
+            <button class="btn heart" (click)="likePost(post.answerTo.id)">
+              <i-bs
+                *ngIf="!post.answerTo.alreadyLiked"
+                name="heart"
+                height="1.5rem"
+                width="1.5rem"
+              ></i-bs>
+              <i-bs
+                *ngIf="post.answerTo.alreadyLiked"
+                class="heart-fill"
+                name="heart-fill"
+                height="1.5rem"
+                width="1.5rem"
+              ></i-bs>
+            </button>
+            {{ post.answerTo.likes }}
+            <button class="btn answer" (click)="sendToPost(post.answerTo.id)">
+              <i-bs name="chat-left" height="1.5rem" width="1.5rem"></i-bs>
+            </button>
+            {{ post.answerTo.answers }}
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <button class="btn heart" (click)="likePost(post.id)">
+          <i-bs
+            *ngIf="!post.alreadyLiked"
+            name="heart"
+            height="1.5rem"
+            width="1.5rem"
+          ></i-bs>
+          <i-bs
+            *ngIf="post.alreadyLiked"
+            class="heart-fill"
+            name="heart-fill"
+            height="1.5rem"
+            width="1.5rem"
+          ></i-bs>
+        </button>
+        {{ post.likes }}
+        <button class="btn answer" (click)="sendToPost(post.id)">
+          <i-bs name="chat-left" height="1.5rem" width="1.5rem"></i-bs>
+        </button>
+        {{ post.answers }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noAnswers>
+  <h6 class="card-subtitle mb-1 text-muted small mt-4">
+    Esse usuário ainda não tem nenhuma resposta...
+  </h6>
+</ng-template>

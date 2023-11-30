@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 interface User {
   name: string;
@@ -26,7 +26,7 @@ export class RegisterComponent {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private router: Router
+    private location: Location
   ) {}
 
   onSubmit() {
@@ -51,7 +51,7 @@ export class RegisterComponent {
       .login(this.user.username, this.user.password)
       .subscribe((res) => {
         localStorage.setItem('token', res.token);
-        this.router.navigate(['/']);
+        this.location.back();
       });
   }
 }

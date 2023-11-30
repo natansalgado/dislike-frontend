@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -11,13 +11,13 @@ export class LoginComponent {
   password: string = '';
   errorMessage: String = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private location: Location) {}
 
   onSubmit() {
     this.authService.login(this.username, this.password).subscribe(
       (res) => {
-        localStorage.setItem("token", res.token);
-        this.router.navigate(['/'])
+        localStorage.setItem('token', res.token);
+        this.location.back();
       },
       (err) => {
         this.errorMessage = 'login ou senha inválido.';

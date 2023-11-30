@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="row">
+    <div class="row justify-content-center mt-5">
+      <div *ngIf="!user">
+        <div class="alert alert-warning">
+          Faça o
+          <a class="text-info" href="/login">login</a> para continuar vendo o
+          feed ou
+          <a class="text-info" href="/register">registre-se</a>
+          caso não tenha uma conta.
+        </div>
+      </div>
+
+      <div *ngIf="user && userOfPage" class="col-md-6">
+        <div class="card card-body">
+          <div class="d-flex">
+            <img
+              class="rounded-circle"
+              src="{{
+                userOfPage.image
+                  ? userOfPage.image
+                  : 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png'
+              }}"
+              alt="Imagem de {{ userOfPage.image }}"
+              height="150px"
+              width="150px"
+            />
+            <div class="mx-3 mt-3">
+              <h3 class="card-title">{{ userOfPage.name }}</h3>
+              <h4 class="card-subtitle mb-2 text-muted small">
+                @{{ userOfPage.username }}
+              </h4>
+              <button class="btn btn-primary">Seguir</button>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <ul class="nav nav-tabs w-100 d-flex justify-content-center">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  [class.active]="active === 'posts'"
+                  aria-current="page"
+                  (click)="toggleActive('posts')"
+                  >Postagens</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  [class.active]="active === 'answers'"
+                  (click)="toggleActive('answers')"
+                  >Respostas</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  [class.active]="active === 'likes'"
+                  (click)="toggleActive('likes')"
+                  >Curtidas</a
+                >
+              </li>
+            </ul>
+
+            <div class="mt-4">
+              <app-user-posts [user]="user" *ngIf="active === 'posts'" />
+              <app-user-answers [user]="user" *ngIf="active === 'answers'" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

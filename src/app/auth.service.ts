@@ -35,4 +35,18 @@ export class AuthService {
 
     return null;
   }
+
+  getUserByUsername(username: string) {
+    const token = this.getToken();
+
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+
+      return this.http.get<any>(`${this.apiUrl}/users/${username}`, { headers });
+    }
+
+    return null;
+  }
 }

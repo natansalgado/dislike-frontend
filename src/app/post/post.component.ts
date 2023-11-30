@@ -59,14 +59,14 @@ export class PostComponent {
   }
 
   reply() {
-    if (!this.answerContent) return;
-
-    this.feedService
-      .newPost(this.user.id, this.answerContent, this.postId)
-      ?.subscribe(() => {
-        location.reload();
-        this.answerContent = '';
-      });
+    if (this.answerContent.trim()) {
+      this.feedService
+        .newPost(this.user.id, this.answerContent.trim(), this.postId)
+        ?.subscribe(() => {
+          location.reload();
+          this.answerContent = '';
+        });
+    }
   }
 
   updateAnswers(postId: string) {
@@ -128,10 +128,6 @@ export class PostComponent {
     });
   }
 
-  innerFunction(event: Event) {
-    event.stopPropagation();
-  }
-
   sendToPost(id: string) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate([`/post/${id}`]);
@@ -146,5 +142,9 @@ export class PostComponent {
         this.updateAnswers(postId);
       }
     });
+  }
+
+  goToProfile(username: string) {
+    this.router.navigate([`/user/${username}`]);
   }
 }

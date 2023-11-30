@@ -4,14 +4,14 @@ import { LoginComponent } from './login/login.component';
 import { FeedComponent } from './feed/feed.component';
 import { PostComponent } from './post/post.component';
 import { RegisterComponent } from './register/register.component';
-import { NavigateComponent } from './navigate/navigate.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: FeedComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'post/:id', component: PostComponent },
-  { path: 'navigate/:id', component: NavigateComponent },
+  { path: 'user/:username', component: ProfileComponent },
 ];
 
 @NgModule({

@@ -25,7 +25,7 @@ export class FeedService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get<any[]>(`${this.apiUrl}/${id}`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
   }
 
   newPost(userId: string, content: string, answerTo?: string | null) {
@@ -75,6 +75,34 @@ export class FeedService {
         }`,
         { headers }
       );
+    }
+
+    return null;
+  }
+
+  getPostsFromUser(id: string): Observable<any[]> | null {
+    const token = this.authService.getToken();
+
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+
+      return this.http.get<any[]>(`${this.apiUrl}/user/${id}`, { headers });
+    }
+
+    return null;
+  }
+
+  getAnswersFromUser(id: string): Observable<any[]> | null {
+    const token = this.authService.getToken();
+
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+
+      return this.http.get<any[]>(`${this.apiUrl}/user/answers/${id}`, { headers });
     }
 
     return null;
