@@ -107,4 +107,18 @@ export class FeedService {
 
     return null;
   }
+
+  getLikedFromUser(id: string): Observable<any[]> | null {
+    const token = this.authService.getToken();
+
+    if (token) {
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+
+      return this.http.get<any[]>(`${this.apiUrl}/user/liked/${id}`, { headers });
+    }
+
+    return null;
+  }
 }

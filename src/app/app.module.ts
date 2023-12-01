@@ -14,6 +14,7 @@ import { allIcons } from 'ngx-bootstrap-icons';
 import { ProfileComponent } from './profile/profile.component';
 import { UserPostsComponent } from './user-posts/user-posts.component';
 import { UserAnswersComponent } from './user-answers/user-answers.component';
+import { UserLikedComponent } from './user-liked/user-liked.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { UserAnswersComponent } from './user-answers/user-answers.component';
     ProfileComponent,
     UserPostsComponent,
     UserAnswersComponent,
+    UserLikedComponent,
   ],
   imports: [
     BrowserModule,

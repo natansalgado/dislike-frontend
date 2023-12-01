@@ -22,9 +22,8 @@ export class ProfileComponent {
     this.authService.getUserLoggedIn()?.subscribe(
       (res) => {
         this.user = res;
-        console.log(JSON.stringify(res));
-        
         this.loadUserOfPage();
+        console.log(res);
       },
       (err) => {
         this.authService.deleteToken();
